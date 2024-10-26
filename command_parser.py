@@ -22,7 +22,7 @@ def read_command():
         print(HELP_TEXT)
         return
     
-    if split_command[0] == "get" and not len(split_command) == 3:
+    if split_command[0] == "get" and not len(split_command) == 2:
         print("GET COMMAND WRONG!")
         print(HELP_TEXT)
         return
@@ -32,7 +32,8 @@ def read_command():
         _handle_set_command(split_command[1], split_command[2])
     else:
         print("Handling get command...")
-        _handle_get_command(split_command[1])
+        value = _handle_get_command(split_command[1])
+        print(f"{split_command[1]}: {value}", end='\n\n')
 
 
 
@@ -41,4 +42,4 @@ def _handle_set_command(key, value):
 
 
 def _handle_get_command(key):
-    get_key(key)
+    return get_key(key)

@@ -3,7 +3,7 @@ import sys
 from command_parser import read_command, HELP_TEXT
 
 
-def shutdown_handler():
+def shutdown_handler(signum, frame):
     print("\nShutdown signal received...")
     cleanup()
     sys.exit(0)
