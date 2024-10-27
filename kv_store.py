@@ -1,6 +1,9 @@
 import os
 import subprocess
-from db_file_manager import get_files_sorted_in_descending_order
+from db_file_manager import get_files_sorted_in_descending_order, create_new_db_file, determine_new_file_name
+from config_reader import Config
+
+config = Config()
 
 def set_key_value(key, value):
     latest_file = ""
@@ -8,6 +11,11 @@ def set_key_value(key, value):
     print(f"Files list: {files_list}")
     if (len(files_list) > 0):
         latest_file = files_list[0]
+
+    file_line_count = int(subprocess.check_output(['wc', '-l', latest_file]).split()[0])
+    if file_line_count >= config.get_key_from_config("db_file_threshold"):
+        create_new_db_file(determine_new_file_name())
+        latest_file = get_files_sorted_in_descending_order("./storage")[0] # TODO: Improve logic to make code less redundant
 
     print(f"FOUND latest file: {latest_file}")
 
@@ -57,7 +65,6 @@ def get_key(key):
             tail_process.wait()
 
             for proc, name in [(grep_process, 'grep'), (sed_process, 'sed'), (tail_process, 'tail')]:
-                # print(f"{name}: {proc.returncode}")
                 if proc.returncode not in [0, 1, None]:
                     raise subprocess.CalledProcessError(
                         proc.returncode,

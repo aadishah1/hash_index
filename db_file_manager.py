@@ -7,7 +7,7 @@ def create_new_db_file(file_name, storage_path="./storage"):
         open(os.path.join(storage_path, file_name), 'a').close()
 
 
-def _determine_new_file_name(storage_path="./storage"):
+def determine_new_file_name(storage_path="./storage"):
     if os.path.exists(storage_path):
         return f"db_file_{int(time.time() // 1)}"
     
@@ -29,4 +29,4 @@ def get_files_sorted_in_descending_order(path):
 
 
 if __name__ == "__main__":
-    create_new_db_file(_determine_new_file_name())
+    create_new_db_file(determine_new_file_name())
